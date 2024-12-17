@@ -1,0 +1,63 @@
+﻿@page
+@model BoardManagement.Pages.ManageBoardsPageModel
+@{
+}
+<div class="container mt-4">
+    <div class="text-center mb-3">
+        <h2 class="text-primary">Manage Here :)</h2>
+    </div>
+    <div class="card mb-4 p-3">
+        <h5 class="text-primary">Add New Board</h5>
+        <form method="post" asp-page-handler="AddBoard" class="d-flex">
+            <input type="text" asp-for="NewBoardName" class="form-control" placeholder="Enter new board..." required />
+            <button type="submit" class="btn btn-success">Add Board</button>
+        </form>
+    </div>
+    <div class="card mb-4 p-3">
+        <h5 class="text-primary">Add New Task</h5>
+        <form method="post" asp-page-handler="AddTask" class="row g-3 align-items-center">
+            <div class="col-md-6">
+                <input type="text" asp-for="NewTask" class="form-control" placeholder="Enter new task..." required />
+            </div>
+            <div class="col-md-12">
+                <label for="SelectedBoardId" class="form-label">Select Board to Assign Task</label>
+                <select asp-for="SelectedBoardId" class="form-control" required>
+                    <option value="">Select a Board...</option>
+                    @foreach (var board in Model.Boards)
+                    {
+                        <option value="@board.Id">@board.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-12 text-center mt-2">
+                <button type="submit" class="btn btn-success">Add Task</button>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        @foreach (var item in Model.ToDoItems)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.TodoName</h5>
+                        <form method="post" asp-page-handler="TaskCompleted" asp-route-id="@item.Id" class="form-check">
+                            <input type="checkbox" class="form-check-input" name="IsCompleted"
+                            @(item.IsCompleted ? "checked" : "")
+                                   onchange="this.form.submit()" />
+                            @if (item.IsCompleted)
+                            {
+                                <span class="text-success ms-2" style="text-decoration: line-through;">Task completed!</span>
+                            }
+                        </form>
+                    </div>
+                    <div class="card-footer d-flex justify-content-end">
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

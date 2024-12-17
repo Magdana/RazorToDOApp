@@ -1,0 +1,41 @@
+﻿@page
+@model BoardManagement.Pages.MainPageModel
+@{
+}
+
+<div class="container mt-4">
+    <!-- Display the list of boards and their respective tasks -->
+    <div class="row">
+        @foreach (var board in Model.Boards)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header text-center">
+                        <h5>@board.Name</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (board.ToDoItems.Any())
+                        {
+                            <div class="row">
+                                @foreach (var item in board.ToDoItems)
+                                {
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card shadow-sm h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">@item.TodoName</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted text-center">No tasks in this board</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
